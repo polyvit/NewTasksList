@@ -1,281 +1,275 @@
-const tasks = [
-  // {
-  //   _id: "5d2ca9e2e03d40b326596aa7",
-  //   completed: true,
-  //   body: "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
-  //   title: "1 - Eu ea incididunt sunt consectetur fugiat non.",
-  // },
-  // {
-  //   _id: "5d2ca9e29c8a94095c1288e0",
-  //   completed: false,
-  //   body: "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
-  //   title:
-  //     "2 - Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  // },
-  // {
-  //   _id: "5d2ca9e2e03d40b3232496aa7",
-  //   completed: true,
-  //   body: "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
-  //   title: "3 - Eu ea incididunt sunt consectetur fugiat non.",
-  // },
-  // {
-  //   _id: "5d2ca9e29c8a94095564788e0",
-  //   completed: false,
-  //   body: "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
-  //   title:
-  //     "4 - Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  // },
-];
+// Elements
+const addTaskBtn = document.querySelector(".add-task-btn");
+const formSection = document.querySelector(".form-section");
+const form = document.forms["addTask"];
+const inputBody = form["body"];
+const select = form["status"];
+const listContainer = document.querySelector(".tasks-block__first-list");
+const completedListContainer = document.querySelector(
+  ".tasks-block__list_completed"
+);
+const tasksSum = document.querySelector(".main-header__title span");
+const taskSectionTitle = document.querySelector(".tasks-block__title");
 
-(function () {
-  // Data
-  // const objOfTasks = arrOfTasks.reduce((acc, task) => {
-  //   acc[task._id] = task;
-  //   return acc;
-  // }, {});
-  const objOfTasks = JSON.parse(localStorage.getItem("data")) || {};
-  const themes = {
-    default: {
-      "--base-text-color": "#212529",
-      "--header-bg": "#007bff",
-      "--header-text-color": "#fff",
-      "--default-btn-bg": "#007bff",
-      "--default-btn-text-color": "#fff",
-      "--default-btn-hover-bg": "#0069d9",
-      "--default-btn-border-color": "#0069d9",
-      "--danger-btn-bg": "#dc3545",
-      "--danger-btn-text-color": "#fff",
-      "--danger-btn-hover-bg": "#bd2130",
-      "--danger-btn-border-color": "#dc3545",
-      "--input-border-color": "#ced4da",
-      "--input-bg-color": "#fff",
-      "--input-text-color": "#495057",
-      "--input-focus-bg-color": "#fff",
-      "--input-focus-text-color": "#495057",
-      "--input-focus-border-color": "#80bdff",
-      "--input-focus-box-shadow": "0 0 0 0.2rem rgba(0, 123, 255, 0.25)",
-    },
-    dark: {
-      "--base-text-color": "#212529",
-      "--header-bg": "#343a40",
-      "--header-text-color": "#fff",
-      "--default-btn-bg": "#58616b",
-      "--default-btn-text-color": "#fff",
-      "--default-btn-hover-bg": "#292d31",
-      "--default-btn-border-color": "#343a40",
-      "--default-btn-focus-box-shadow":
-        "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
-      "--danger-btn-bg": "#b52d3a",
-      "--danger-btn-text-color": "#fff",
-      "--danger-btn-hover-bg": "#88222c",
-      "--danger-btn-border-color": "#88222c",
-      "--input-border-color": "#ced4da",
-      "--input-bg-color": "#fff",
-      "--input-text-color": "#495057",
-      "--input-focus-bg-color": "#fff",
-      "--input-focus-text-color": "#495057",
-      "--input-focus-border-color": "#78818a",
-      "--input-focus-box-shadow": "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
-    },
-    light: {
-      "--base-text-color": "#212529",
-      "--header-bg": "#fff",
-      "--header-text-color": "#212529",
-      "--default-btn-bg": "#fff",
-      "--default-btn-text-color": "#212529",
-      "--default-btn-hover-bg": "#e8e7e7",
-      "--default-btn-border-color": "#343a40",
-      "--default-btn-focus-box-shadow":
-        "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
-      "--danger-btn-bg": "#f1b5bb",
-      "--danger-btn-text-color": "#212529",
-      "--danger-btn-hover-bg": "#ef808a",
-      "--danger-btn-border-color": "#e2818a",
-      "--input-border-color": "#ced4da",
-      "--input-bg-color": "#fff",
-      "--input-text-color": "#495057",
-      "--input-focus-bg-color": "#fff",
-      "--input-focus-text-color": "#495057",
-      "--input-focus-border-color": "#78818a",
-      "--input-focus-box-shadow": "0 0 0 0.2rem rgba(141, 143, 146, 0.25)",
-    },
-  };
+// Itialization
+const objOfTasks = JSON.parse(localStorage.getItem("second-list")) || {};
+let changedTask; // задача, которая подвергается изменениям
+renderAllTasks(objOfTasks);
+setTasksSum();
 
-  // Elements
-  const listContainer = document.querySelector(".list-group");
-  const tasksMenuContainer = document.querySelector(".tasks-menu");
-  const form = document.forms["addTask"];
-  const inputTitle = form.elements["title"];
-  const inputBody = form.elements["body"];
-  const themeSelect = document.querySelector("#themeSelect");
-  const noTasksSection = document.querySelector(".notion");
-  const tasksSum = document.querySelector(".tasks-sum");
+// Events
+addTaskBtn.addEventListener("click", showForm); // показ формы
+form.addEventListener("submit", onSubmitHandler); // добавление задачи
+listContainer.addEventListener("click", chooseOption); // кнопка с 3 точками
+completedListContainer.addEventListener("click", chooseOption); // кнопка с 3 точками в другой секции
+listContainer.addEventListener("click", changeStatus); // нажатие на кнопку со статусом
 
-  // Events
-  form.addEventListener("submit", onSubmitHandler);
-  listContainer.addEventListener("click", deleteTask);
-  listContainer.addEventListener("click", completeTask);
-  themeSelect.addEventListener("change", changeTheme);
-  tasksMenuContainer.addEventListener("click", filterTasks);
+// Handlers
+function showForm() {
+  formSection.classList.remove("form-section_hidden");
+  formSection.querySelector("input").focus();
+  formSection
+    .querySelector(".create-task-btn")
+    .classList.remove("create-task-btn_hidden");
+  formSection
+    .querySelector(".change-task-btn")
+    .classList.add("change-task-btn_hidden");
+}
+function onSubmitHandler(e) {
+  e.preventDefault();
+  const bodyValue = inputBody.value;
+  const status = select.value;
 
-  // Handlers
-  function onSubmitHandler(e) {
-    e.preventDefault();
-    const titleValue = inputTitle.value;
-    const bodyValue = inputBody.value;
-
-    if (!titleValue || !bodyValue) {
-      alert("Форма пустая");
-      return;
-    }
-
-    const task = createNewObjTask(titleValue, bodyValue);
+  if (!bodyValue || !status) {
+    alert("Форма пустая");
+    return;
+  }
+  if (e.target.children[3].classList.contains("change-task-btn_hidden")) {
+    const task = createNewObjTask(bodyValue, status);
     const li = renderOneLi(task);
-    listContainer.insertAdjacentElement("beforeend", li);
-    noTasksSection.classList.add("d-none");
-    tasksMenuContainer.classList.remove("d-none");
+    listContainer.insertAdjacentHTML("beforeend", li);
     setTasksSum();
-    form.reset();
+    listContainer.parentElement.classList.remove("tasks-block_hidden");
+  } else {
+    objOfTasks[changedTask.dataset.taskId].body = bodyValue;
+    objOfTasks[changedTask.dataset.taskId].status = status;
+    localStorage.setItem("second-list", JSON.stringify(objOfTasks));
+    changedTask.querySelector("p").textContent = bodyValue;
+    const icon = changedTask.querySelector("img");
+    icon.src = `images/Ellipse-${setStatusImg(status)}.png`;
+    icon.nextSibling.textContent = status;
   }
-  function deleteTask({ target }) {
-    if (target.classList.contains("delete-btn")) {
-      const task = target.closest("[data-task-id]");
-      const id = task.dataset.taskId;
-      const confirmed = deleteObjTask(id);
-      if (confirmed) {
-        task.remove();
-        setTasksSum();
-      }
-      if (Object.keys(objOfTasks).length == 0) {
-        noTasksSection.classList.remove("d-none");
-        tasksMenuContainer.classList.add("d-none");
-      }
-    }
-  }
-  function completeTask({ target }) {
-    if (target.classList.contains("complete-btn")) {
-      const task = target.closest("[data-task-id]");
-      const id = task.dataset.taskId;
-      objOfTasks[id].completed = true;
-      localStorage.setItem("data", JSON.stringify(objOfTasks));
-      task.classList.add("completed-task");
-      listContainer.insertAdjacentElement("beforeend", task);
-    }
-  }
-  function filterTasks({ target }) {
-    if (target.classList.contains("btn")) {
-      listContainer.innerHTML = "";
-      const fragment = document.createDocumentFragment();
-      if (target.dataset.type == "notcompleted") {
-        Object.values(objOfTasks)
-          .filter((task) => task.completed == false)
-          .forEach((task) => {
-            const li = renderOneLi(task);
-            fragment.append(li);
+  form.reset();
+  formSection.classList.add("form-section_hidden");
+}
+function chooseOption({ target }) {
+  if (target.classList.contains("tasks-list__btn-edit")) {
+    if (window.getComputedStyle(target.nextElementSibling).display == "none") {
+      target.nextElementSibling.style.display = "block";
+      const links = Array.from(target.nextElementSibling.children);
+      links.forEach((a) => {
+        if (a.dataset.type == "delete") {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            deleteTask(target);
           });
-        listContainer.append(fragment);
-      }
-      if (target.dataset.type == "all") {
-        renderAllTasks(objOfTasks);
-      }
+        } else {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            changeTask(target);
+          });
+        }
+      });
+    } else {
+      target.nextElementSibling.style.display = "none";
     }
   }
-
-  // Functions
-  renderAllTasks(objOfTasks);
-  setTasksSum();
-  setTheme(localStorage.getItem("app_theme") ?? "default");
-  themeSelect.value = localStorage.getItem("app_theme");
-
-  function renderAllTasks(tasksList) {
-    if (!tasksList) return;
-
-    if (Object.keys(tasksList).length == 0) {
-      tasksMenuContainer.classList.add("d-none");
-      noTasksSection.classList.remove("d-none");
+}
+function changeStatus({ target }) {
+  if (target.classList.contains("tasks-list__btn-main")) {
+    const task = target.closest(".tasks-list");
+    const id = task.dataset.taskId;
+    switch (target.classList[1]) {
+      case "tasks-list__btn-main_pending":
+        target.classList.remove("tasks-list__btn-main_pending");
+        target.classList.add("tasks-list__btn-main_inprogress");
+        target.textContent = "В процессе";
+        objOfTasks[id].completed = "inprogress";
+        localStorage.setItem("second-list", JSON.stringify(objOfTasks));
+        break;
+      case "tasks-list__btn-main_inprogress":
+        target.classList.remove("tasks-list__btn-main_inprogress");
+        target.classList.add("tasks-list__btn-main_done");
+        target.textContent = "Выполнено";
+        objOfTasks[id].completed = "done";
+        localStorage.setItem("second-list", JSON.stringify(objOfTasks));
+        completeTask(task);
+        break;
     }
+  }
+}
 
-    const fragment1 = document.createDocumentFragment();
-    const fragment2 = document.createDocumentFragment();
-    Object.values(tasksList).forEach((task) => {
-      const li = renderOneLi(task);
-      fragment1.append(li);
-      if (li.classList.contains("completed-task")) {
-        fragment2.append(li);
-      }
-    });
-    listContainer.append(fragment1);
-    listContainer.append(fragment2);
-
-    // tasksMenuContainer
-    //   .querySelector('[data-type="all"]')
-    //   .classList.add("btn-active");
+// Functions
+function renderAllTasks(tasksList) {
+  if (
+    !Object.values(tasksList).some((task) => task.completed !== "done") ||
+    Object.keys(tasksList).length == 0
+  ) {
+    listContainer.parentElement.classList.add("tasks-block_hidden");
   }
 
-  function renderOneLi({ _id, title, body, completed }) {
-    let li = document.createElement("li");
-    li.classList.add(
-      "list-group-item",
-      "d-flex",
-      "align-items-center",
-      "flex-wrap"
-    );
-    if (completed) {
-      li.classList.add("completed-task");
+  Object.values(tasksList).forEach((task) => {
+    const li = renderOneLi(task);
+    if (task.completed == "done") {
+      completedListContainer.parentElement.classList.remove(
+        "tasks-block_hidden"
+      );
+      completedListContainer.insertAdjacentHTML("beforeend", li);
+    } else {
+      listContainer.insertAdjacentHTML("beforeend", li);
     }
-    li.setAttribute("data-task-id", _id);
-    const span = document.createElement("span");
-    span.textContent = title;
-    span.style.fontWeight = "bold";
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Удалить";
-    deleteButton.classList.add("btn", "btn-danger", "delete-btn", "ms-auto");
-    const completeButton = document.createElement("button");
-    completeButton.textContent = "Выполнено";
-    completeButton.classList.add("btn", "btn-primary", "complete-btn", "ms-2");
-    const p = document.createElement("p");
-    p.classList.add("mt-2", "w-100");
-    p.textContent = body;
-
-    li.append(span);
-    li.append(deleteButton);
-    li.append(completeButton);
-    li.append(p);
-    return li;
+  });
+}
+function createNewObjTask(body, status) {
+  const newTask = {
+    body,
+    status,
+    completed: "pending",
+    date: `${Date.now()}`,
+    _id: `task${Date.now()}`,
+  };
+  objOfTasks[newTask._id] = newTask;
+  localStorage.setItem("second-list", JSON.stringify(objOfTasks));
+  return { ...newTask };
+}
+function renderOneLi({ body, status, date, _id, completed }) {
+  let oneLiHTML = `
+    <li class="tasks-list" data-task-id="${_id}">
+              <div class="tasks-list__elem">
+                <p class="tasks-list__text">
+                  ${body}
+                </p>
+                <button class="tasks-list__btn-main tasks-list__btn-main_${completed}">
+                  ${setBtnText(completed)}
+                </button>
+                <span class="tasks-list__status">
+                <img src="images/Ellipse-${setStatusImg(
+                  status
+                )}.png" alt="иконка" />
+                ${status}
+                </span>
+                <span class="tasks-list__time">${calcDuration(date)} дней</span>
+                <div class="tasks-list__dropdown">
+                  <img
+                    src="images/edit-btn-icon.svg"
+                    alt="Кнопка редактирования"
+                    class="tasks-list__btn-edit"
+                  />
+                  <div id="myDropdown" class="dropdown-content">
+                    <a href="#" data-type="delete">Удалить</a>
+                    <a href="#" data-type="change">Изменить</a>
+                  </div>
+                </div>
+              </div>
+              <hr />
+      </li>
+  `;
+  return oneLiHTML;
+}
+function calcDuration(date) {
+  let currentDate = Date.now();
+  // let lastDate = Date.parse(new Date(2023, 3, 1, 0, 0, 0, 0));
+  let days = (currentDate - +date) / 86400000;
+  return Math.floor(days);
+}
+function setStatusImg(status) {
+  switch (status) {
+    case "Низкий":
+      return "green";
+      break;
+    case "Нормальный":
+      return "yellow";
+      break;
+    case "Критичный":
+      return "red";
+      break;
   }
-
-  function createNewObjTask(title, body) {
-    const newTask = {
-      title,
-      body,
-      completed: false,
-      _id: `${Date.now()}`,
-    };
-    objOfTasks[newTask._id] = newTask;
-    localStorage.setItem("data", JSON.stringify(objOfTasks));
-    return { ...newTask };
+}
+function setBtnText(completed) {
+  switch (completed) {
+    case "inprogress":
+      return "В процессе";
+      break;
+    case "done":
+      return "Выполнено";
+      break;
+    default:
+      return "Ожидание";
   }
-
-  function deleteObjTask(id) {
-    const isConfirm = confirm("Вы точно хотите удалить эту задачу?");
-    if (!isConfirm) return;
-    delete objOfTasks[id];
-    localStorage.setItem("data", JSON.stringify(objOfTasks));
-    return isConfirm;
+}
+function setTasksSum() {
+  let amount = Object.keys(objOfTasks).length;
+  tasksSum.textContent = `${amount} задач${chooseEnd()}`;
+  function chooseEnd() {
+    switch (amount) {
+      case 1:
+        return "а";
+        break;
+      case 2:
+      case 3:
+      case 4:
+        return "и";
+        break;
+      default:
+        return "";
+    }
   }
-
-  function changeTheme(e) {
-    const selectedTheme = themeSelect.value;
-    setTheme(selectedTheme);
-    localStorage.setItem("app_theme", selectedTheme);
+}
+function deleteTask(target) {
+  const task = target.closest("[data-task-id]");
+  const id = task.dataset.taskId;
+  const confirmed = deleteObjTask(id);
+  if (confirmed) {
+    task.remove();
+    setTasksSum();
   }
-  function setTheme(theme = "default") {
-    const settings = themes[theme];
-    Object.entries(settings).forEach(([prop, value]) => {
-      document.documentElement.style.setProperty(prop, value);
-    });
+  if (!Object.values(objOfTasks).some((task) => task.completed == "done")) {
+    completedListContainer.parentElement.classList.add("tasks-block_hidden");
   }
-  function setTasksSum() {
-    tasksSum.textContent = ` ${Object.keys(objOfTasks).length}`;
+}
+function deleteObjTask(id) {
+  const isConfirm = confirm("Вы точно хотите удалить эту задачу?");
+  if (!isConfirm) return;
+  delete objOfTasks[id];
+  localStorage.setItem("second-list", JSON.stringify(objOfTasks));
+  return isConfirm;
+}
+function completeTask(task) {
+  if (
+    completedListContainer.parentElement.classList.contains(
+      "tasks-block_hidden"
+    )
+  ) {
+    completedListContainer.parentElement.classList.remove("tasks-block_hidden");
   }
-})();
+  task.querySelector("a[data-type='change']").remove();
+  completedListContainer.insertAdjacentElement("beforeend", task);
+  if (listContainer.children.length == 0) {
+    listContainer.parentElement.classList.add("tasks-block_hidden");
+  }
+}
+function changeTask(target) {
+  const task = target.closest(".tasks-list");
+  const id = task.dataset.taskId;
+  task.querySelector(".dropdown-content").style.display = "none";
+  formSection.classList.remove("form-section_hidden");
+  formSection
+    .querySelector(".create-task-btn")
+    .classList.add("create-task-btn_hidden");
+  formSection
+    .querySelector(".change-task-btn")
+    .classList.remove("change-task-btn_hidden");
+  formSection.querySelector("input").value = objOfTasks[id].body;
+  formSection.querySelector("select").value = objOfTasks[id].status;
+  changedTask = task;
+}

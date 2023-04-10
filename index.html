@@ -4,99 +4,79 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-      crossorigin="anonymous"
-    />
     <link rel="stylesheet" href="styles.css" />
-    <title>Todo list</title>
+    <title>Список дел</title>
   </head>
   <body>
-    <!-- Меню -->
-    <nav class="header navbar navbar-dark bg-primary">
-      <a class="navbar-brand">Navbar</a>
-      <form class="form-inline">
-        <select class="form-control form-control-sm" id="themeSelect">
-          <option value="default">Theme Default</option>
-          <option value="light">Theme Light</option>
-          <option value="dark">Theme Dark</option>
-        </select>
-      </form>
-    </nav>
-    <!-- Заголовок -->
-    <div class="title my-5 mx-auto w-100">
-      <h3 class="text-center mb-4">Список задач</h3>
-      <h5 class="text-center">Всего: <span class="tasks-sum"></span></h5>
-    </div>
-    <!-- Форма -->
-    <div class="form-section mt-5">
-      <div class="container">
-        <div class="row">
-          <div class="col col-8 mx-auto">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Add new task</h5>
-                <form name="addTask">
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    class="form-control"
-                    placeholder="Task title"
-                  />
-                  <input
-                    type="text"
-                    name="body"
-                    id="body"
-                    class="form-control mt-3"
-                    placeholder="Task body"
-                  />
-                  <button type="submit" class="btn btn-primary mt-4">
-                    Add task
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
+    <div class="container">
+      <div class="main-header">
+        <h1 class="main-header__title">У вас <span>7 задач</span> сегодня</h1>
+        <button class="add-task-btn">Добавить</button>
+      </div>
+      <div class="form-section form-section_hidden">
+        <div class="form-container">
+          <form name="addTask">
+            <input
+              type="text"
+              name="body"
+              id="body"
+              placeholder="Впишите текст задачи"
+            />
+            <select
+              id="themeSelect"
+              class="form-container__select"
+              name="status"
+            >
+              <option value="">Выберите приоритет</option>
+              <option value="Низкий">Низкий</option>
+              <option value="Нормальный">Нормальный</option>
+              <option value="Критичный">Критичный</option>
+            </select>
+            <button type="submit" class="create-task-btn">Добавить</button>
+            <button
+              type="submit"
+              class="change-task-btn change-task-btn_hidden"
+            >
+              Изменить
+            </button>
+          </form>
         </div>
       </div>
-    </div>
-    <!-- Дисклеймер -->
-    <div class="notion my-5 mx-auto w-100 d-none">
-      <h4 class="text-center text-diclaimer">Пока нет задач</h4>
-    </div>
-    <!-- Список задач -->
-    <div class="tasks-list-section mt-5">
-      <div class="container">
-        <!-- Кнопки фильтрации -->
-        <div class="tasks-menu d-flex justify-content-center mb-3">
-          <button class="me-3 btn btn-light" data-type="all">Все задачи</button>
-          <button class="btn btn-light" data-type="notcompleted">
-            Незавершенные задачи
-          </button>
+      <div class="tasks-container">
+        <div class="tasks-block">
+          <div class="tasks-block__title">В процессе</div>
+          <ul class="tasks-block__first-list">
+            <!-- <li class="tasks-list" data-task-id="1">
+              <div class="tasks-list__elem">
+                <p class="tasks-list__text">Текст задачи</p>
+                <button class="tasks-list__btn-main tasks-list__btn-main_color">
+                  В ожидании
+                </button>
+                <span class="tasks-list__status">
+                  <img src="images/Ellipse-green.png" alt="иконка" />
+                  Нормальный
+                </span>
+                <span class="tasks-list__time">0</span>
+                <div class="tasks-list__dropdown">
+                  <img
+                    src="images/edit-btn-icon.svg"
+                    alt="Кнопка редактирования"
+                    class="tasks-list__btn-edit"
+                  />
+                  <div id="myDropdown" class="dropdown-content">
+                    <a href="#" data-type="delete">Удалить</a>
+                    <a href="#" data-type="change">Изменить</a>
+                  </div>
+                </div>
+              </div>
+              <hr />
+            </li> -->
+          </ul>
         </div>
-        <ul class="list-group d-flex">
-          <!-- <li
-            class="list-group-item d-flex align-items-center flex-wrap mt-2 completed-task"
-          >
-            <span>My title</span>
-            <button
-              class="btn btn-danger ms-auto delete-btn"
-              style="margin-left: auto !important"
-            >
-              Delete
-            </button>
-            <button class="btn btn-primary ms-2 complete-btn">Выполнено</button>
-            <p class="mt-2 w-100">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi
-              soluta vitae sint tenetur quam quisquam explicabo quos? Aut iste
-              ut laborum iure aspernatur, nam ea quibusdam rerum minus magnam
-              dignissimos.
-            </p>
-          </li> -->
-        </ul>
+        <div class="tasks-block tasks-block_hidden">
+          <div class="tasks-block__title">Завершено</div>
+          <ul class="tasks-block__list tasks-block__list_completed"></ul>
+        </div>
       </div>
     </div>
     <script src="script.js"></script>
